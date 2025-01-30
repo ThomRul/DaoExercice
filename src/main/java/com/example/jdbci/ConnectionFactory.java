@@ -1,6 +1,8 @@
 package com.example.jdbci;
 
 import com.example.jdbci.models.Address;
+import com.example.jdbci.models.Book;
+import com.example.jdbci.models.Borrowing;
 import com.example.jdbci.models.User;
 
 import java.sql.Connection;
@@ -23,15 +25,18 @@ public class ConnectionFactory {
                 Statement statement = connection.createStatement();
                 )
         {
-            // drop les tables si jamais elles existent
+            //drop les tables si jamais elles existent
+            statement.execute("DROP TABLE IF EXISTS borrowing CASCADE");
+            statement.execute("DROP TABLE IF EXISTS book CASCADE");
             statement.execute("DROP TABLE IF EXISTS address CASCADE");
             statement.execute("DROP TABLE IF EXISTS \"user\" CASCADE");
-            System.out.println("Table address et user vidées avec succès");
+            System.out.println("Tables address et user vidées avec succès");
 
-            // création des tables
+            //création des tables
             statement.executeUpdate(User.queryCreateTable());
             statement.executeUpdate(Address.queryCreateTable());
-            System.out.println("Tables créées avec succès");
+            statement.executeUpdate(Book.queryCreateTable());
+            statement.executeUpdate(Borrowing.queryCreateTable());
 
         }catch(SQLException error){
             System.out.println(error.getMessage());
